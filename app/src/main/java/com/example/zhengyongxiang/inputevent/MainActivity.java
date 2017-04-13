@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ClipboardManager clipboardManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,8 +23,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-        clipboardManager.setPrimaryClip(ClipData.newPlainText("first","你好，新的一天"));
+        downLoadPic();
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,6 +124,10 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void downLoadPic() {
+        new DownLoadPicManager().onCreate(this);
     }
 
     @Override
