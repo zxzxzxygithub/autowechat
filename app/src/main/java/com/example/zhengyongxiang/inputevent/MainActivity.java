@@ -1,12 +1,22 @@
 package com.example.zhengyongxiang.inputevent;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        registerReceiver(mReceivePush, new IntentFilter(MyApplication.ACTION_PUSH));
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         downLoadPic();
@@ -25,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 new MockManager().sendTextOnly(MainActivity.this
-                ,"想要吃好吃哒");
+                        , "想要吃好吃哒");
             }
         });
     }
@@ -55,4 +66,32 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    BroadcastReceiver mReceivePush = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String pushStr = intent.getStringExtra(MyApplication.KEY_PUSHSTR);
+            Gson gson = new Gson();
+            try {
+                MockManager manager = new MockManager();
+                ConfigBean configBean = gson.fromJson(pushStr, ConfigBean.class);
+                String text = configBean.getText();
+                boolean hasPic = configBean.isHasPic();
+                String type = "图文朋友圈";
+                if (!hasPic) {
+                    type = "纯文本";
+                }
+                new AlertDialog.Builder(MainActivity.this).setMessage("收到服务端通知，马上进行朋友圈自动发送" + "\n"
+                        + "发送形式：" + type + "\n"
+                        + "发送内容" + text
+                ).create().show();
+                if (!hasPic && !TextUtils.isEmpty(text)) {
+                    manager.sendTextOnly(MainActivity.this, text);
+                }
+            } catch (JsonSyntaxException e) {
+                e.printStackTrace();
+            }
+
+        }
+    };
 }
