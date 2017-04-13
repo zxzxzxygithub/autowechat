@@ -8,3 +8,5 @@
 /captures
 .externalNativeBuild
 app/src/main/res/drawable/
+/.idea/
+.idea/vcs.xml

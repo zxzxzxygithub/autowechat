@@ -3,6 +3,8 @@ package com.example.zhengyongxiang.inputevent;
 import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,13 +23,16 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+    private ClipboardManager clipboardManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        clipboardManager.setPrimaryClip(ClipData.newPlainText("first","你好，新的一天"));
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,7 +101,9 @@ public class MainActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
 //                        7.  input text  light
-                        rootShellCmd.exec("input text  light  " + "\n");
+//                        rootShellCmd.exec("input text  '你好，新的一天！'  " + "\n");
+                        rootShellCmd.exec("am broadcast -a ADB_INPUT_TEXT --es msg '不错，可以学着品红酒的好工具' " + "\n");
+
                         try {
                             Thread.sleep(800);
                         } catch (InterruptedException e) {
