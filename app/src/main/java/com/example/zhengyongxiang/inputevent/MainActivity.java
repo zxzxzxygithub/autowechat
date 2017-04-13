@@ -1,24 +1,17 @@
 package com.example.zhengyongxiang.inputevent;
 
-import android.app.ActivityManager;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -42,11 +35,7 @@ public class MainActivity extends AppCompatActivity {
                 final RootShellCmd rootShellCmd = new RootShellCmd();
                 //1.打开微信
                 Intent intent = new Intent();
-//                com.tencent.mm/com.tencent.mm.plugin.nfc_open.ui.NfcWebViewUI
                 intent.setComponent(new ComponentName("com.tencent.mm", "com.tencent.mm.ui.LauncherUI"));
-//                intent.putExtra("Kdescription","加油！！！");
-//                intent.putExtra("WechatForwarderText",true);
-//                intent.putExtra("Ksnsupload_type",9);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
 //                2.点击发现：
@@ -134,17 +123,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }).start();
 
-
-//                Intent intent = new Intent(MainActivity.this, MyService.class);
-//                intent.setAction("com.example.zhengyongxiang.inputevent.repeating");
-//                PendingIntent sender = PendingIntent
-//                        .getService(MainActivity.this, 0, intent, 0);
-////开始时间
-//                long firstime = SystemClock.elapsedRealtime();
-//
-//                AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
-////5秒一个周期，不停的发送广播
-//                am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, firstime, 1 * 1000, sender);
 
             }
         });
