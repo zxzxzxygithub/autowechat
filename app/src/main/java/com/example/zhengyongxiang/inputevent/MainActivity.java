@@ -1,7 +1,5 @@
 package com.example.zhengyongxiang.inputevent;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +14,8 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+
+    private String detaiText = "我需要三件东西：爱情友谊和图书。然而这三者之间何其相通！炽热的爱情可以充实图书的内容，图书又是人们最忠实的朋友。";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +89,9 @@ public class MainActivity extends AppCompatActivity {
                         }
 //                        7.  input text  light
 //                        rootShellCmd.exec("input text  '你好，新的一天！'  " + "\n");
-                        rootShellCmd.exec("am broadcast -a ADB_INPUT_TEXT --es msg '我需要三件东西：爱情友谊和图书。然而这三者之间何其相通！炽热的爱情可以充实图书的内容，图书又是人们最忠实的朋友。' " + "\n");
+                        rootShellCmd.exec("am broadcast -a ADB_INPUT_TEXT --es msg '" +
+                                detaiText +
+                                "' " + "\n");
 
                         try {
                             Thread.sleep(800);
