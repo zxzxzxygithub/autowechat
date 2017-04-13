@@ -2,6 +2,8 @@ package com.example.zhengyongxiang.inputevent;
 
 import android.app.Application;
 
+import com.yuan.library.dmanager.download.DownloadManager;
+
 import cn.jpush.android.api.JPushInterface;
 
 /**
@@ -17,6 +19,7 @@ public class MyApplication extends Application {
         super.onCreate();
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
+        DownloadManager.getInstance().init(this, 9);
     }
 
 

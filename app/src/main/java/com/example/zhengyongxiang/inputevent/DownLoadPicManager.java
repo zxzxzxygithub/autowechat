@@ -27,8 +27,8 @@ import java.net.URL;
 public class DownLoadPicManager {
 
     private final static String TAG = "DownLoadPicManager";
-    private final static String ALBUM_PATH
-            = Environment.getExternalStorageDirectory() + "/download_test/";
+    public final static String ALBUM_PATH
+            = Environment.getExternalStorageDirectory() + "/autowechatpics/";
     private Bitmap mBitmap;
     private String mFileName;
     private Context context;
