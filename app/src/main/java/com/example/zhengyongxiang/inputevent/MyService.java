@@ -29,7 +29,7 @@ import java.util.List;
 
 public class MyService extends Service {
 
-    private static final String KEY_DOORDER = "key_doorder";
+
     private DownloadManager mDownloadManager;
     private int finishedCount;
     private boolean isScreenOn = true;
@@ -41,8 +41,6 @@ public class MyService extends Service {
     public void onCreate() {
         super.onCreate();
         mDownloadManager = DownloadManager.getInstance();
-        //注册推送广播
-        registerReceiver(mReceivePush, new IntentFilter(MyApplication.ACTION_PUSH));
 //    注册屏幕点亮关闭广播
         final IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_SCREEN_OFF);
@@ -75,7 +73,7 @@ public class MyService extends Service {
         startForeground(id, notification);
 //       取消通知
         startService(new Intent(this, AssistService.class));
-        boolean doOrder = intent.getBooleanExtra(KEY_DOORDER, false);
+        boolean doOrder = intent.getBooleanExtra(MyApplication.KEY_DOORDER, false);
         String pushStr = intent.getStringExtra(MyApplication.KEY_PUSHSTR);
         Context context = this;
         if (doOrder) {
@@ -84,16 +82,6 @@ public class MyService extends Service {
         return START_STICKY;
     }
 
-    BroadcastReceiver mReceivePush = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Intent service = new Intent(context, MyService.class);
-            service.putExtra(KEY_DOORDER, true);
-            String pushStr = intent.getStringExtra(MyApplication.KEY_PUSHSTR);
-            service.putExtra(MyApplication.KEY_PUSHSTR, pushStr);
-            startService(service);
-        }
-    };
 
     /**
      * @description 屏幕亮灭广播
@@ -119,10 +107,6 @@ public class MyService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mReceivePush != null) {
-            unregisterReceiver(mReceivePush);
-            mReceivePush = null;
-        }
 
         if (mBatInfoReceiver != null) {
             unregisterReceiver(mBatInfoReceiver);

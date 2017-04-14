@@ -10,6 +10,7 @@ import android.util.Log;
 import com.example.zhengyongxiang.inputevent.ConfigBean;
 import com.example.zhengyongxiang.inputevent.MockManager;
 import com.example.zhengyongxiang.inputevent.MyApplication;
+import com.example.zhengyongxiang.inputevent.MyService;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
@@ -51,10 +52,11 @@ public class MyReceiver extends BroadcastReceiver {
             Log.d(TAG, "[MyReceiver] 接收到推送下来的通知的ID: " + notifactionId);
             String alert = bundle.getString(JPushInterface.EXTRA_ALERT);
             if (!TextUtils.isEmpty(alert)) {
-                Intent pushIntent = new Intent(MyApplication.ACTION_PUSH);
-                pushIntent.putExtra(MyApplication.KEY_PUSHSTR, alert);
-                context.sendBroadcast(pushIntent);
-                Log.d(TAG, "[MyReceiver] 发送alert给mainactiity: " + alert);
+                Intent service = new Intent(context, MyService.class);
+                service.putExtra(MyApplication.KEY_DOORDER, true);
+                service.putExtra(MyApplication.KEY_PUSHSTR, alert);
+                context.startService(service);
+                Log.d(TAG, "[MyReceiver] 启动service: " + alert);
             }
 
         } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {

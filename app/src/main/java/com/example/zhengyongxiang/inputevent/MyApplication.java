@@ -17,6 +17,7 @@ public class MyApplication extends Application {
     public static final int REQUEST_CODE_LOCKSCREE = 9999;
     public static final String KEY_LOCKSCREEN = "lockscreen";
     public static final String ACTION_FINISH = "com.zhengyx.action.finish";
+    public static final String KEY_DOORDER = "key_order";
 
     @Override
     public void onCreate() {
