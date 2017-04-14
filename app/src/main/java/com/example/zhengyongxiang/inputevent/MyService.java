@@ -29,6 +29,7 @@ import java.util.List;
 
 public class MyService extends Service {
 
+    private static final String KEY_DOORDER = "key_doorder";
     private DownloadManager mDownloadManager;
     private int finishedCount;
     private boolean isScreenOn = true;
@@ -74,124 +75,23 @@ public class MyService extends Service {
         startForeground(id, notification);
 //       取消通知
         startService(new Intent(this, AssistService.class));
+        boolean doOrder = intent.getBooleanExtra(KEY_DOORDER, false);
+        String pushStr = intent.getStringExtra(MyApplication.KEY_PUSHSTR);
+        Context context = this;
+        if (doOrder) {
+            doOrder(context, pushStr);
+        }
         return START_STICKY;
     }
 
     BroadcastReceiver mReceivePush = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-//           屏幕熄灭了，先解锁并亮屏
-            if (!isScreenOn){
-                Utils.wakeUpAndUnlock(context);
-            }
+            Intent service = new Intent(context, MyService.class);
+            service.putExtra(KEY_DOORDER, true);
             String pushStr = intent.getStringExtra(MyApplication.KEY_PUSHSTR);
-            Gson gson = new Gson();
-            try {
-                final MockManager manager = new MockManager();
-                ConfigBean configBean = gson.fromJson(pushStr, ConfigBean.class);
-                final String text = configBean.getText();
-                final boolean hasPic = configBean.isHasPic();
-                final List<String> urls = configBean.getUrls();
-                String type = "图文朋友圈";
-                if (!hasPic) {
-                    type = "纯文本朋友圈";
-                }
-                final AlertDialog alertDialog = new AlertDialog.Builder(MyService.this, R.style.Theme_AppCompat_Light).setMessage("收到服务端通知，马上进行朋友圈自动发送" + "\n"
-                        + "发送形式: " + type + "\n"
-                        + "发送内容: " + text
-                ).create();
-                Window window = alertDialog.getWindow();
-                window.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-                alertDialog.show();
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            Thread.sleep(5000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        new Handler(Looper.getMainLooper()).post(new Runnable() {
-                            @Override
-                            public void run() {
-                                alertDialog.dismiss();
-                                if (!hasPic && !TextUtils.isEmpty(text)) {
-                                    manager.sendTextOnly(getApplicationContext(), text);
-                                } else if (hasPic && urls != null && urls.size() > 0) {
-                                    int position = 0;
-                                    final int totalSize = urls.size();
-                                    for (String url :
-                                            urls) {
-                                        position++;
-                                        final int myposition = position;
-                                        DownloadTask itemTask = new DownloadTask(new TaskEntity.Builder().url(url).build());
-                                        itemTask.setListener(new DownloadTaskListener() {
-                                            @Override
-                                            public void onQueue(DownloadTask downloadTask) {
-                                                Log.d("downloadtag", "onQueue+" + myposition);
-                                            }
-
-                                            @Override
-                                            public void onConnecting(DownloadTask downloadTask) {
-
-                                            }
-
-                                            @Override
-                                            public void onStart(DownloadTask downloadTask) {
-                                                TaskEntity taskEntity = downloadTask.getTaskEntity();
-                                                taskEntity.getTaskStatus();
-                                                String fileName = taskEntity.getFileName();
-                                                Log.d("downloadtag", "onStart+" + myposition + "_fileName_" + fileName);
-                                            }
-
-                                            @Override
-                                            public void onPause(DownloadTask downloadTask) {
-
-                                            }
-
-                                            @Override
-                                            public void onCancel(DownloadTask downloadTask) {
-
-                                            }
-
-                                            @Override
-                                            public void onFinish(DownloadTask downloadTask) {
-                                                mDownloadManager.cancelTask(downloadTask);
-                                                finishedCount++;
-                                                String path = downloadTask.getTaskEntity().getFilePath();
-                                                String fileName = downloadTask.getTaskEntity().getFileName();
-                                                Utils.addToSysPicGallery(getApplicationContext(), path, fileName);
-
-                                                if (finishedCount == totalSize) {
-                                                    Toast.makeText(getApplicationContext(), "所有图片下载完毕", Toast.LENGTH_SHORT).show();
-                                                    new MockManager().sendPicAndText(getApplicationContext(), text, totalSize);
-                                                    finishedCount = 0;
-                                                }
-                                                Log.d("downloadtag", "downloadfinish+" + myposition);
-                                            }
-
-                                            @Override
-                                            public void onError(DownloadTask downloadTask, int code) {
-                                                Log.d("downloadtag", "onError+code_" + code);
-
-                                            }
-                                        });
-                                        TaskEntity taskEntity = itemTask.getTaskEntity();
-                                        taskEntity.setFilePath(DownLoadPicManager.ALBUM_PATH);
-                                        mDownloadManager.addTask(itemTask);
-                                    }
-
-                                }
-                            }
-                        });
-
-                    }
-                }).start();
-
-            } catch (JsonSyntaxException e) {
-                e.printStackTrace();
-            }
-
+            service.putExtra(MyApplication.KEY_PUSHSTR, pushStr);
+            startService(service);
         }
     };
 
@@ -200,7 +100,7 @@ public class MyService extends Service {
      * @author zhengyx
      * @date 2017/4/14
      */
-    private  BroadcastReceiver mBatInfoReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver mBatInfoReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(final Context context, final Intent intent) {
             final String action = intent.getAction();
@@ -224,9 +124,131 @@ public class MyService extends Service {
             mReceivePush = null;
         }
 
-        if (mBatInfoReceiver!=null){
+        if (mBatInfoReceiver != null) {
             unregisterReceiver(mBatInfoReceiver);
-            mBatInfoReceiver=null;
+            mBatInfoReceiver = null;
+        }
+    }
+
+    /**
+     * @description 执行命令
+     * @author zhengyx
+     * @date 2017/4/14
+     */
+    private void doOrder(Context context, String pushStr) {
+        //           屏幕熄灭了，先解锁并亮屏
+        if (!isScreenOn) {
+            Utils.wakeUpAndUnlock(context);
+            Intent intent = new Intent(this, UnLockScreenActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+
+        Gson gson = new Gson();
+        try {
+            final MockManager manager = new MockManager();
+            ConfigBean configBean = gson.fromJson(pushStr, ConfigBean.class);
+            final String text = configBean.getText();
+            final boolean hasPic = configBean.isHasPic();
+            final List<String> urls = configBean.getUrls();
+            String type = "图文朋友圈";
+            if (!hasPic) {
+                type = "纯文本朋友圈";
+            }
+            final AlertDialog alertDialog = new AlertDialog.Builder(MyService.this, R.style.Theme_AppCompat_Light).setMessage("收到服务端通知，马上进行朋友圈自动发送" + "\n"
+                    + "发送形式: " + type + "\n"
+                    + "发送内容: " + text
+            ).create();
+            Window window = alertDialog.getWindow();
+            window.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+            alertDialog.show();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            alertDialog.dismiss();
+                            if (!hasPic && !TextUtils.isEmpty(text)) {
+                                manager.sendTextOnly(getApplicationContext(), text);
+                            } else if (hasPic && urls != null && urls.size() > 0) {
+                                int position = 0;
+                                final int totalSize = urls.size();
+                                for (String url :
+                                        urls) {
+                                    position++;
+                                    final int myposition = position;
+                                    DownloadTask itemTask = new DownloadTask(new TaskEntity.Builder().url(url).build());
+                                    itemTask.setListener(new DownloadTaskListener() {
+                                        @Override
+                                        public void onQueue(DownloadTask downloadTask) {
+                                            Log.d("downloadtag", "onQueue+" + myposition);
+                                        }
+
+                                        @Override
+                                        public void onConnecting(DownloadTask downloadTask) {
+
+                                        }
+
+                                        @Override
+                                        public void onStart(DownloadTask downloadTask) {
+                                            TaskEntity taskEntity = downloadTask.getTaskEntity();
+                                            taskEntity.getTaskStatus();
+                                            String fileName = taskEntity.getFileName();
+                                            Log.d("downloadtag", "onStart+" + myposition + "_fileName_" + fileName);
+                                        }
+
+                                        @Override
+                                        public void onPause(DownloadTask downloadTask) {
+
+                                        }
+
+                                        @Override
+                                        public void onCancel(DownloadTask downloadTask) {
+
+                                        }
+
+                                        @Override
+                                        public void onFinish(DownloadTask downloadTask) {
+                                            mDownloadManager.cancelTask(downloadTask);
+                                            finishedCount++;
+                                            String path = downloadTask.getTaskEntity().getFilePath();
+                                            String fileName = downloadTask.getTaskEntity().getFileName();
+                                            Utils.addToSysPicGallery(getApplicationContext(), path, fileName);
+
+                                            if (finishedCount == totalSize) {
+                                                Toast.makeText(getApplicationContext(), "所有图片下载完毕", Toast.LENGTH_SHORT).show();
+                                                new MockManager().sendPicAndText(getApplicationContext(), text, totalSize);
+                                                finishedCount = 0;
+                                            }
+                                            Log.d("downloadtag", "downloadfinish+" + myposition);
+                                        }
+
+                                        @Override
+                                        public void onError(DownloadTask downloadTask, int code) {
+                                            Log.d("downloadtag", "onError+code_" + code);
+
+                                        }
+                                    });
+                                    TaskEntity taskEntity = itemTask.getTaskEntity();
+                                    taskEntity.setFilePath(DownLoadPicManager.ALBUM_PATH);
+                                    mDownloadManager.addTask(itemTask);
+                                }
+
+                            }
+                        }
+                    });
+
+                }
+            }).start();
+
+        } catch (JsonSyntaxException e) {
+            e.printStackTrace();
         }
     }
 }

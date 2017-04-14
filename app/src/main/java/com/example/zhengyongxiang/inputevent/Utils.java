@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.PowerManager;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import java.io.FileNotFoundException;
 
@@ -45,6 +46,7 @@ public class Utils {
         KeyguardManager.KeyguardLock kl = km.newKeyguardLock("unLock");
         //解锁
         kl.disableKeyguard();
+
         //获取电源管理器对象
         PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
         //获取PowerManager.WakeLock对象,后面的参数|表示同时传入两个值,最后的是LogCat里用的Tag
@@ -53,6 +55,7 @@ public class Utils {
         wl.acquire();
         //释放
         wl.release();
+        Log.d("lyj", "----------------- wakeUpAndUnlock...");
     }
 
     /**

@@ -6,5 +6,6 @@
     <uses-policies>
         <!--强制锁屏-->
         <force-lock/>
+        <disable-keyguard-features/>
     </uses-policies>
 </device-admin>

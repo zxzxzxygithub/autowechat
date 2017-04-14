@@ -100,6 +100,9 @@ public class MockManager {
                 intent1.putExtra(MyApplication.KEY_LOCKSCREEN, true);
                 intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent1);
+//
+                context.sendBroadcast(new Intent(MyApplication.ACTION_FINISH));
+//
                 Toast.makeText(context, "朋友圈自动发送结束!", Toast.LENGTH_SHORT).show();
             }
         });
@@ -133,7 +136,7 @@ public class MockManager {
 //                        朋友圈
                 performClick(rootShellCmd, "input tap 507  225 " + "\n", 1800);
 //                        相机按钮
-                performClick(rootShellCmd, "input tap 662  79 " + "\n", 1800);
+                performClick(rootShellCmd, "input tap 662  79 " + "\n", 2500);
 //                        4.点击从相册选择
                 performClick(rootShellCmd, "input tap 431  717 " + "\n", 800);
 
