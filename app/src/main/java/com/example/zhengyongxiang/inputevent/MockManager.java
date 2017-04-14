@@ -75,7 +75,7 @@ public class MockManager {
                 performClick(rootShellCmd, "input swipe 662 79  662 79 800 " + "\n", 800);
 //                        7.  点击文本编辑框，防止adbkeyboard没有生效
                 performClick(rootShellCmd, "input tap " +
-                        textEditPoint  + "\n", 800);
+                        textEditPoint + "\n", 800);
 //                8.  输入文本
                 performClick(rootShellCmd, "am broadcast -a ADB_INPUT_TEXT --es msg '" +
                         detaiText +
@@ -86,14 +86,23 @@ public class MockManager {
                 clickBack(rootShellCmd);
 //                        8.  返回
                 clickBack(rootShellCmd);
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(context, "朋友圈自动发送结束!", Toast.LENGTH_SHORT).show();
-                    }
-                });
+//结束发送朋友圈
+                performFinishSend(context);
             }
         }).start();
+    }
+
+    private void performFinishSend(final Context context) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent1 = new Intent(context, MainActivity.class);
+                intent1.putExtra(MyApplication.KEY_LOCKSCREEN, true);
+                intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent1);
+                Toast.makeText(context, "朋友圈自动发送结束!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     /**
@@ -137,9 +146,9 @@ public class MockManager {
 
 //                        6. 点击完成按钮
                 performClick(rootShellCmd, "input tap 637  110 " + "\n", 1800);
- //                        7.  点击文本编辑框，防止adbkeyboard没有生效
+                //                        7.  点击文本编辑框，防止adbkeyboard没有生效
                 performClick(rootShellCmd, "input tap " +
-                        textEditPoint  + "\n", 800);
+                        textEditPoint + "\n", 800);
 //                        8.  输入文本
                 performClick(rootShellCmd, "am broadcast -a ADB_INPUT_TEXT --es msg '" +
                         detaiText +
@@ -150,12 +159,8 @@ public class MockManager {
                 clickBack(rootShellCmd);
 //                        8.  返回
                 clickBack(rootShellCmd);
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(context, "朋友圈自动发送结束!", Toast.LENGTH_SHORT).show();
-                    }
-                });
+//                结束发送朋友圈
+                performFinishSend(context);
             }
         }).start();
     }

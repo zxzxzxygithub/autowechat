@@ -140,6 +140,27 @@
             android:name=".AssistService"
             android:enabled="true"
             android:exported="true"></service>
+
+
+        <!-- 设备管理 -->
+        <!-- 其中，permission表示此功能所需的权限；
+        android:name="android.app.device_admin"表示这个动作的跳转界面 -->
+        <receiver
+            android:name=".AdminReceiver"
+            android:label="@string/app_name"
+            android:description="@string/app_name"
+            android:permission="android.permission.BIND_DEVICE_ADMIN">
+            <meta-data
+                android:name="android.app.device_admin"
+                android:resource="@xml/lock"/>
+            <intent-filter>
+                <action
+                    android:name="android.app.action.DEVICE_ADMIN_ENABLED"/>
+            </intent-filter>
+        </receiver>
+
+
+
     </application>
 
 </manifest>
