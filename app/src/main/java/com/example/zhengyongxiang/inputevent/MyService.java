@@ -1,14 +1,17 @@
 package com.example.zhengyongxiang.inputevent;
 
-import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Window;
@@ -28,6 +31,7 @@ public class MyService extends Service {
 
     private DownloadManager mDownloadManager;
     private int finishedCount;
+    private boolean isScreenOn = true;
 
     public MyService() {
     }
@@ -36,7 +40,13 @@ public class MyService extends Service {
     public void onCreate() {
         super.onCreate();
         mDownloadManager = DownloadManager.getInstance();
+        //注册推送广播
         registerReceiver(mReceivePush, new IntentFilter(MyApplication.ACTION_PUSH));
+//    注册屏幕点亮关闭广播
+        final IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_SCREEN_OFF);
+        filter.addAction(Intent.ACTION_SCREEN_ON);
+        registerReceiver(mBatInfoReceiver, filter);
     }
 
     @Override
@@ -47,12 +57,33 @@ public class MyService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        return super.onStartCommand(intent, flags, startId);
+        //启用前台服务，主要是startForeground()
+        Notification.Builder builder = new Notification.Builder(this);
+        Notification notification = builder.build();
+        Intent mIntent = new Intent(this, MyService.class);
+        int requestCode = 111;
+        PendingIntent pendingIntent = PendingIntent.getService(this, requestCode, mIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.setContentIntent(pendingIntent);
+        builder.setSmallIcon(R.mipmap.ic_launcher);
+        builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
+        builder.setAutoCancel(true);
+        builder.setContentTitle("加油123");
+        //设置通知默认效果
+        notification.flags = Notification.FLAG_SHOW_LIGHTS;
+        int id = 123;
+        startForeground(id, notification);
+//       取消通知
+        startService(new Intent(this, AssistService.class));
+        return START_STICKY;
     }
 
     BroadcastReceiver mReceivePush = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+//           屏幕熄灭了，先解锁并亮屏
+            if (!isScreenOn){
+                Utils.wakeUpAndUnlock(context);
+            }
             String pushStr = intent.getStringExtra(MyApplication.KEY_PUSHSTR);
             Gson gson = new Gson();
             try {
@@ -65,7 +96,7 @@ public class MyService extends Service {
                 if (!hasPic) {
                     type = "纯文本朋友圈";
                 }
-                final AlertDialog alertDialog = new AlertDialog.Builder(MyService.this).setMessage("收到服务端通知，马上进行朋友圈自动发送" + "\n"
+                final AlertDialog alertDialog = new AlertDialog.Builder(MyService.this, R.style.Theme_AppCompat_Light).setMessage("收到服务端通知，马上进行朋友圈自动发送" + "\n"
                         + "发送形式: " + type + "\n"
                         + "发送内容: " + text
                 ).create();
@@ -164,12 +195,38 @@ public class MyService extends Service {
         }
     };
 
+    /**
+     * @description 屏幕亮灭广播
+     * @author zhengyx
+     * @date 2017/4/14
+     */
+    private  BroadcastReceiver mBatInfoReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(final Context context, final Intent intent) {
+            final String action = intent.getAction();
+            if (Intent.ACTION_SCREEN_ON.equals(action)) {
+                isScreenOn = true;
+                Log.d("lyj", "-----------------screen is on...");
+            } else if (Intent.ACTION_SCREEN_OFF.equals(action)) {
+                isScreenOn = false;
+                Log.d("lyj", "----------------- screen is off...");
+
+            }
+        }
+
+    };
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         if (mReceivePush != null) {
             unregisterReceiver(mReceivePush);
             mReceivePush = null;
+        }
+
+        if (mBatInfoReceiver!=null){
+            unregisterReceiver(mBatInfoReceiver);
+            mBatInfoReceiver=null;
         }
     }
 }
