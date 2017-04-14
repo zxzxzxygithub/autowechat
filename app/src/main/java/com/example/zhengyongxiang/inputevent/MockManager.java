@@ -73,10 +73,9 @@ public class MockManager {
                 performClick(rootShellCmd, "input swipe 662 79  662 79 800 " + "\n", 800);
 //                        7.  点击文本编辑框，防止adbkeyboard没有生效
                 performClick(rootShellCmd, "input tap " +
-                        textEditPoint +
-                        "' " + "\n", 800);
+                        textEditPoint  + "\n", 800);
 //                8.  输入文本
-                performClick(rootShellCmd, "am broadcast -、a ADB_INPUT_TEXT --es msg '" +
+                performClick(rootShellCmd, "am broadcast -a ADB_INPUT_TEXT --es msg '" +
                         detaiText +
                         "' " + "\n", 800);
 //                        7.  发送（和相机的坐标一致）
