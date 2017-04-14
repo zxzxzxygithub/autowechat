@@ -1,8 +1,10 @@
 package com.example.zhengyongxiang.inputevent;
 
-import android.app.Activity;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
@@ -47,7 +49,7 @@ public class MockManager {
      * @author zhengyx
      * @date 2017/4/13
      */
-    public void sendTextOnly(final Activity context, final String detaiText) {
+    public void sendTextOnly(final Context context, final String detaiText) {
         Toast.makeText(context, "朋友圈自动发送开始", Toast.LENGTH_SHORT).show();
 //                0.先获取root权限
         final RootShellCmd rootShellCmd = new RootShellCmd();
@@ -84,7 +86,7 @@ public class MockManager {
                 clickBack(rootShellCmd);
 //                        8.  返回
                 clickBack(rootShellCmd);
-                context.runOnUiThread(new Runnable() {
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
                         Toast.makeText(context, "朋友圈自动发送结束!", Toast.LENGTH_SHORT).show();
@@ -99,7 +101,7 @@ public class MockManager {
      * @author zhengyx
      * @date 2017/4/13
      */
-    public void sendPicAndText(final Activity context, final String detaiText, final int count) {
+    public void sendPicAndText(final Context context, final String detaiText, final int count) {
         Toast.makeText(context, "朋友圈自动发送开始", Toast.LENGTH_SHORT).show();
 //                0.先获取root权限
         final RootShellCmd rootShellCmd = new RootShellCmd();
@@ -148,7 +150,7 @@ public class MockManager {
                 clickBack(rootShellCmd);
 //                        8.  返回
                 clickBack(rootShellCmd);
-                context.runOnUiThread(new Runnable() {
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
                         Toast.makeText(context, "朋友圈自动发送结束!", Toast.LENGTH_SHORT).show();
