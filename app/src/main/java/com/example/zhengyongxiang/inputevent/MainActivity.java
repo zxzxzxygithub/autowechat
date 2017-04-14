@@ -44,7 +44,8 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new MockManager().sendPicAndText(MainActivity.this,"好");
+                int count = 1;
+                new MockManager().sendPicAndText(MainActivity.this, "好", count);
             }
         });
     }
@@ -134,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
                                                 taskEntity.getTaskStatus();
                                                 String fileName = taskEntity.getFileName();
                                                 int taskStatus = taskEntity.getTaskStatus();
-                                                Log.d("downloadtag", "onStart+" + myposition+"_fileName_"+fileName);
+                                                Log.d("downloadtag", "onStart+" + myposition + "_fileName_" + fileName);
                                             }
 
                                             @Override
@@ -157,8 +158,8 @@ public class MainActivity extends AppCompatActivity {
 
                                                 if (finishedCount == totalSize) {
                                                     Toast.makeText(MainActivity.this, "所有图片下载完毕", Toast.LENGTH_SHORT).show();
-                                                    new MockManager().sendPicAndText(MainActivity.this, text);
-                                                    finishedCount=0;
+                                                    new MockManager().sendPicAndText(MainActivity.this, text,totalSize);
+                                                    finishedCount = 0;
                                                 }
                                                 Log.d("downloadtag", "downloadfinish+" + myposition);
                                             }
