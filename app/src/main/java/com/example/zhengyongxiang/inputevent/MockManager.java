@@ -1,6 +1,5 @@
 package com.example.zhengyongxiang.inputevent;
 
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
@@ -54,10 +53,7 @@ public class MockManager {
 //                0.先获取root权限
         final RootShellCmd rootShellCmd = new RootShellCmd();
         //1.打开微信
-        Intent intent = new Intent();
-        intent.setComponent(new ComponentName("com.tencent.mm", "com.tencent.mm.ui.LauncherUI"));
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
+        Utils.openWeChat(context);
 //                2.点击发现：
         new Thread(new Runnable() {
             @Override
@@ -68,7 +64,7 @@ public class MockManager {
                     e.printStackTrace();
                 }
 //                        发现
-                performClick(rootShellCmd, "input tap 465  1188 " + "\n", 800);
+                performClick(rootShellCmd, "input tap 465  1188 " + "\n", 1800);
 //                        朋友圈
                 performClick(rootShellCmd, "input tap 507  225 " + "\n", 1800);
 //                        长按相机按钮
@@ -118,10 +114,7 @@ public class MockManager {
 //                0.先获取root权限
         final RootShellCmd rootShellCmd = new RootShellCmd();
         //1.打开微信
-        Intent intent = new Intent();
-        intent.setComponent(new ComponentName("com.tencent.mm", "com.tencent.mm.ui.LauncherUI"));
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
+        Utils.openWeChat(context);
 //                2.点击发现：
         new Thread(new Runnable() {
             @Override
@@ -132,7 +125,7 @@ public class MockManager {
                     e.printStackTrace();
                 }
 //                        发现
-                performClick(rootShellCmd, "input tap 465  1188 " + "\n", 800);
+                performClick(rootShellCmd, "input tap 465  1188 " + "\n", 1800);
 //                        朋友圈
                 performClick(rootShellCmd, "input tap 507  225 " + "\n", 1800);
 //                        相机按钮
@@ -167,6 +160,7 @@ public class MockManager {
             }
         }).start();
     }
+
 
     /**
      * @description 点击返回

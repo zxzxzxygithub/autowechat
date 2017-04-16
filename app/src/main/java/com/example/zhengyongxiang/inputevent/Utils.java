@@ -27,12 +27,12 @@ public class Utils {
         // 其次把文件插入到系统图库
         try {
             MediaStore.Images.Media.insertImage(context.getContentResolver(),
-                    path, fileName, null);
+                    path+fileName, fileName, null);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         // 最后通知图库更新
-        context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + path)));
+        context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + path+fileName)));
     }
 
 
@@ -73,6 +73,18 @@ public class Utils {
         intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION,
                 "激活后就能一键锁屏了");
         context.startActivityForResult(intent, MyApplication.REQUEST_CODE_LOCKSCREE);
+    }
+
+    /**
+     * @description 打开微信
+     * @author zhengyx
+     * @date 2017/4/14
+     */
+    public static void openWeChat(Context context) {
+        Intent intent = new Intent();
+        intent.setComponent(new ComponentName("com.tencent.mm", "com.tencent.mm.ui.LauncherUI"));
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 
 

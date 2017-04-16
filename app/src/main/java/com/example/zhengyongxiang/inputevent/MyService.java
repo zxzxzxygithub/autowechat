@@ -73,13 +73,16 @@ public class MyService extends Service {
         startForeground(id, notification);
 //       取消通知
         startService(new Intent(this, AssistService.class));
-        boolean doOrder = intent.getBooleanExtra(MyApplication.KEY_DOORDER, false);
-        String pushStr = intent.getStringExtra(MyApplication.KEY_PUSHSTR);
-        Context context = this;
-        if (doOrder) {
-            doOrder(context, pushStr);
+        if (intent!=null){
+            boolean doOrder = intent.getBooleanExtra(MyApplication.KEY_DOORDER, false);
+            String pushStr = intent.getStringExtra(MyApplication.KEY_PUSHSTR);
+            Context context = this;
+            if (doOrder) {
+                doOrder(context, pushStr);
+            }
         }
-        return START_STICKY;
+        return  super.onStartCommand(intent,
+                Service.START_FLAG_REDELIVERY, startId);
     }
 
 
@@ -199,7 +202,7 @@ public class MyService extends Service {
 
                                         @Override
                                         public void onFinish(DownloadTask downloadTask) {
-                                            mDownloadManager.cancelTask(downloadTask);
+//                                            mDownloadManager.cancelTask(downloadTask);
                                             finishedCount++;
                                             String path = downloadTask.getTaskEntity().getFilePath();
                                             String fileName = downloadTask.getTaskEntity().getFileName();

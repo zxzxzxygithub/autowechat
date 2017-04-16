@@ -25,6 +25,8 @@ public class MyApplication extends Application {
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
         DownloadManager.getInstance().init(this, 9);
+        CrashHandler mCrashHandler = CrashHandler.getInstance();
+        mCrashHandler.setCrashHandlerInfo(this);
     }
 
 

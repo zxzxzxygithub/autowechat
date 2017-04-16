@@ -6,6 +6,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -36,13 +37,15 @@ public class MainActivity extends AppCompatActivity {
         //
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         //
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int count = 1;
-                new MockManager().sendPicAndText(MainActivity.this, "好", count);
+//                int count = 1;
+//                new MockManager().sendPicAndText(MainActivity.this, "好", count);
+                Utils.openWeChat(MainActivity.this);
             }
         });
         // 获取设备管理服务

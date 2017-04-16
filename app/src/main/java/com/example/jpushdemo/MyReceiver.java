@@ -34,6 +34,11 @@ public class MyReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+
+        if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
+            context.startService(new Intent(context, MyService.class));
+        }
+
         Bundle bundle = intent.getExtras();
         Log.d(TAG, "[MyReceiver] onReceive - " + intent.getAction() + ", extras: " + printBundle(bundle));
 
