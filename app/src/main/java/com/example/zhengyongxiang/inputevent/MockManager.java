@@ -68,7 +68,7 @@ public class MockManager {
 //                        朋友圈
                 performClick(rootShellCmd, "input tap 507  225 " + "\n", 1800);
 //                        长按相机按钮
-                performClick(rootShellCmd, "input swipe 662 79  662 79 800 " + "\n", 800);
+                performClick(rootShellCmd, "input swipe 662 91  662 91 800 " + "\n", 800);
 //                        7.  点击文本编辑框，防止adbkeyboard没有生效
                 performClick(rootShellCmd, "input tap " +
                         textEditPoint + "\n", 800);
@@ -129,9 +129,9 @@ public class MockManager {
 //                        朋友圈
                 performClick(rootShellCmd, "input tap 507  225 " + "\n", 1800);
 //                        相机按钮
-                performClick(rootShellCmd, "input tap 662  79 " + "\n", 2500);
+                performClick(rootShellCmd, "input tap 662  91 " + "\n", 2500);
 //                        4.点击从相册选择
-                performClick(rootShellCmd, "input tap 431  717 " + "\n", 800);
+                performClick(rootShellCmd, "input tap 431  717 " + "\n", 1800);
 
 //                        5.点击相册图片
                 clickPic(rootShellCmd, count);
