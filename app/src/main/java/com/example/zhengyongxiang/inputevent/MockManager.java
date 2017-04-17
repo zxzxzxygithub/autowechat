@@ -43,6 +43,12 @@ public class MockManager {
         list.add(pic9);
     }
 
+    private String POINT_FAXIAN = " 465  1188  ";//发现
+    private String POINT_PYQ = " 507  225  ";//朋友圈
+    private String POINT_CAMERA = " 662 91 ";//相机
+    private String POINT_FROM_ALBUM = "  431  717   ";//从相册选择
+    private String POINT_WANCHENG = " 637  110 ";//完成
+
     /**
      * @description 只发文字
      * @author zhengyx
@@ -64,11 +70,18 @@ public class MockManager {
                     e.printStackTrace();
                 }
 //                        发现
-                performClick(rootShellCmd, "input tap 465  1188 " + "\n", 1800);
+                performClick(rootShellCmd, "input tap " +
+                        POINT_FAXIAN +
+                        " " + "\n", 1800);
 //                        朋友圈
-                performClick(rootShellCmd, "input tap 507  225 " + "\n", 1800);
+                performClick(rootShellCmd, "input tap  " +
+                        POINT_PYQ +
+                        " " + "\n", 1800);
 //                        长按相机按钮
-                performClick(rootShellCmd, "input swipe 662 91  662 91 800 " + "\n", 800);
+                performClick(rootShellCmd, "input swipe  " +
+                        POINT_CAMERA +
+                        POINT_CAMERA +
+                        "  800 " + "\n", 800);
 //                        7.  点击文本编辑框，防止adbkeyboard没有生效
                 performClick(rootShellCmd, "input tap " +
                         textEditPoint + "\n", 800);
@@ -77,7 +90,8 @@ public class MockManager {
                         detaiText +
                         "' " + "\n", 800);
 //                        7.  发送（和相机的坐标一致）
-                performClick(rootShellCmd, "input tap 662  79  " + "\n", 1800);
+                performClick(rootShellCmd, "input tap " +
+                        POINT_CAMERA + "\n", 1800);
 //                        7.  返回
                 clickBack(rootShellCmd);
 //                        8.  返回
@@ -125,13 +139,17 @@ public class MockManager {
                     e.printStackTrace();
                 }
 //                        发现
-                performClick(rootShellCmd, "input tap 465  1188 " + "\n", 1800);
+                performClick(rootShellCmd, "input tap  " +
+                        POINT_FAXIAN + "\n", 1800);
 //                        朋友圈
-                performClick(rootShellCmd, "input tap 507  225 " + "\n", 1800);
+                performClick(rootShellCmd, "input tap  " +
+                        POINT_PYQ + "\n", 1800);
 //                        相机按钮
-                performClick(rootShellCmd, "input tap 662  91 " + "\n", 2500);
+                performClick(rootShellCmd, "input tap  " +
+                        POINT_CAMERA + "\n", 2500);
 //                        4.点击从相册选择
-                performClick(rootShellCmd, "input tap 431  717 " + "\n", 1800);
+                performClick(rootShellCmd, "input tap " +
+                        POINT_FROM_ALBUM + "\n", 1800);
 
 //                        5.点击相册图片
                 clickPic(rootShellCmd, count);
@@ -141,7 +159,8 @@ public class MockManager {
 
 
 //                        6. 点击完成按钮
-                performClick(rootShellCmd, "input tap 637  110 " + "\n", 1800);
+                performClick(rootShellCmd, "input tap  " +
+                        POINT_WANCHENG + "\n", 1800);
                 //                        7.  点击文本编辑框，防止adbkeyboard没有生效
                 performClick(rootShellCmd, "input tap " +
                         textEditPoint + "\n", 800);
@@ -150,7 +169,8 @@ public class MockManager {
                         detaiText +
                         "' " + "\n", 800);
 //                        7.  发送（和相机的坐标一致）
-                performClick(rootShellCmd, "input tap 662  79  " + "\n", 1800);
+                performClick(rootShellCmd, "input tap " +
+                        POINT_CAMERA + "\n", 1800);
 //                        7.  返回
                 clickBack(rootShellCmd);
 //                        8.  返回
