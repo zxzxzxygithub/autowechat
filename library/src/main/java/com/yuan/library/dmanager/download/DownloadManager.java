@@ -38,7 +38,7 @@ public class DownloadManager {
     private int mThreadCount = 1;
 
     // task list
-    private Map<String, DownloadTask> mCurrentTaskList;
+    private Map<Long, DownloadTask> mCurrentTaskList;
 
     // greenDao seesion
     private DaoSession mDaoSession;
@@ -184,7 +184,7 @@ public class DownloadManager {
     /**
      * @return task
      */
-    public DownloadTask getTask(String id) {
+    public DownloadTask getTask(long id) {
         DownloadTask currTask = mCurrentTaskList.get(id);
         if (currTask == null) {
             TaskEntity entity = DaoManager.instance().queryWidthId(id);
@@ -200,7 +200,7 @@ public class DownloadManager {
     }
 
 
-    public boolean isPauseTask(String id) {
+    public boolean isPauseTask(long id) {
         TaskEntity entity = DaoManager.instance().queryWidthId(id);
         if (entity != null) {
             File file = new File(entity.getFilePath(), entity.getFilePath());
@@ -212,7 +212,7 @@ public class DownloadManager {
         return false;
     }
 
-    public boolean isFinishTask(String id) {
+    public boolean isFinishTask(long id) {
         TaskEntity entity = DaoManager.instance().queryWidthId(id);
         if (entity != null) {
             File file = new File(entity.getFilePath(), entity.getFileName());

@@ -31,10 +31,8 @@ public class TaskEntity {
      + "fileName TEXT,"
      + "taskStatus INTEGER" + ");";
      */
-    @Id(autoincrement = true)
-    private Long id;
-    @Property
-    private String taskId;
+    @Id
+    private Long taskId;
     @Property
     private long totalSize;
     @Property
@@ -59,10 +57,15 @@ public class TaskEntity {
         this.taskStatus = builder.taskStatus;
     }
 
-    @Generated(hash = 1689179221)
-    public TaskEntity(Long id, String taskId, long totalSize, long completedSize, String url,
+
+    @Generated(hash = 397975341)
+    public TaskEntity() {
+    }
+
+
+    @Generated(hash = 996475170)
+    public TaskEntity(Long taskId, long totalSize, long completedSize, String url,
             String filePath, String fileName, int taskStatus) {
-        this.id = id;
         this.taskId = taskId;
         this.totalSize = totalSize;
         this.completedSize = completedSize;
@@ -72,12 +75,8 @@ public class TaskEntity {
         this.taskStatus = taskStatus;
     }
 
-    @Generated(hash = 397975341)
-    public TaskEntity() {
-    }
-
-    public String getTaskId() {
-        taskId = TextUtils.isEmpty(taskId) ? String.valueOf(url.hashCode()) : taskId;
+    public Long getTaskId() {
+        taskId = taskId==0 ? url.hashCode() : taskId;
         return taskId;
     }
 
@@ -109,7 +108,7 @@ public class TaskEntity {
         return taskStatus;
     }
 
-    public void setTaskId(String taskId) {
+    public void setTaskId(long taskId) {
         this.taskId = taskId;
     }
 
@@ -150,7 +149,7 @@ public class TaskEntity {
 
     public static class Builder {
         // file id
-        private String taskId;
+        private long taskId;
         // file length
         private long totalSize;
         // file complete length
@@ -164,7 +163,7 @@ public class TaskEntity {
         // file download status
         private int taskStatus;
 
-        public Builder downloadId(String taskId) {
+        public Builder downloadId(long taskId) {
             this.taskId = taskId;
             return this;
         }
@@ -218,11 +217,9 @@ public class TaskEntity {
                 '}';
     }
 
-    public Long getId() {
-        return this.id;
+
+    public void setTaskId(Long taskId) {
+        this.taskId = taskId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 }

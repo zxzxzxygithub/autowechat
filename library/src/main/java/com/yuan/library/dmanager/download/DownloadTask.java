@@ -95,7 +95,8 @@ public class DownloadTask implements Runnable {
             mTaskEntity.setTaskStatus(TaskStatus.TASK_STATUS_CONNECTING);
             handler.sendEmptyMessage(TaskStatus.TASK_STATUS_CONNECTING);
 
-            if (DaoManager.instance().queryWidthId(mTaskEntity.getTaskId()) != null) {
+            TaskEntity savedTaskEntity = DaoManager.instance().queryWidthId(mTaskEntity.getTaskId());
+            if (savedTaskEntity != null) {
                 DaoManager.instance().update(mTaskEntity);
             }
 
@@ -119,10 +120,8 @@ public class DownloadTask implements Runnable {
             if (response.isSuccessful()) {
                 ResponseBody responseBody = response.body();
                 if (responseBody != null) {
-                    if (DaoManager.instance().queryWidthId(mTaskEntity.getTaskId()) == null) {
-                        DaoManager.instance().insertOrReplace(mTaskEntity);
-                        mTaskEntity.setTotalSize(responseBody.contentLength());
-                    }
+                    DaoManager.instance().insertOrReplace(mTaskEntity);
+                    mTaskEntity.setTotalSize(responseBody.contentLength());
                     mTaskEntity.setTaskStatus(TaskStatus.TASK_STATUS_DOWNLOADING);
 
                     double updateSize = mTaskEntity.getTotalSize() / 100;

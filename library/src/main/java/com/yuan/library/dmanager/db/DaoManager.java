@@ -33,7 +33,7 @@ public class DaoManager {
         DownloadManager.getInstance().getDaoSession().insertOrReplace(entity);
     }
 
-    public TaskEntity queryWidthId(String taskId) {
+    public TaskEntity queryWidthId(long taskId) {
         return DownloadManager.getInstance().getDaoSession().getTaskEntityDao().queryBuilder().where(TaskEntityDao.Properties.TaskId.eq(taskId)).unique();
     }
 
