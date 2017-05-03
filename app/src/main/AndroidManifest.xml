@@ -140,9 +140,12 @@
             android:value="db2be6da6d2d165b52c8ca4f" /> <!-- </>值来自开发者平台取得的AppKey -->
 
         <service
+
             android:name=".AssistService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true">
+
+        </service>
 
 
         <!-- 设备管理 -->

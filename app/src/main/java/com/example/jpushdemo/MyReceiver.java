@@ -7,18 +7,13 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.example.zhengyongxiang.inputevent.ConfigBean;
-import com.example.zhengyongxiang.inputevent.MockManager;
 import com.example.zhengyongxiang.inputevent.MyApplication;
 import com.example.zhengyongxiang.inputevent.MyService;
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Iterator;
-import java.util.List;
 
 import cn.jpush.android.api.JPushInterface;
 
