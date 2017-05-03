@@ -14,6 +14,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.zhengyongxiang.inputevent.cmd.Task;
+import com.example.zhengyongxiang.inputevent.cmd.ThreadPool;
+
 /**
  * @author zhengyx
  * @description 入口activity
@@ -44,7 +47,11 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 //                int count = 1;
 //                new MockManager().sendPicAndText(MainActivity.this, "好", count);
-                Utils.openWeChat(MainActivity.this);
+//                Utils.openWeChat(MainActivity.this);
+                ThreadPool threadPool = ThreadPool.getThreadPool();
+                for(int i=1;i<=50;i++) {
+                    threadPool.addTask(new Task("cmd_"+i));
+                }
             }
         });
         // 获取设备管理服务

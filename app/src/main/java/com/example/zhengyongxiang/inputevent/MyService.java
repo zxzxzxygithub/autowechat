@@ -18,6 +18,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.example.zhengyongxiang.inputevent.cmd.MockManager;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.yuan.library.dmanager.download.DownloadManager;

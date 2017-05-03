@@ -1,4 +1,4 @@
-package com.example.zhengyongxiang.inputevent;
+package com.example.zhengyongxiang.inputevent.cmd;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,6 +6,11 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.KeyEvent;
 import android.widget.Toast;
+
+import com.example.zhengyongxiang.inputevent.MainActivity;
+import com.example.zhengyongxiang.inputevent.MyApplication;
+import com.example.zhengyongxiang.inputevent.Utils;
+import com.example.zhengyongxiang.inputevent.cmd.RootShellCmd;
 
 import java.util.ArrayList;
 

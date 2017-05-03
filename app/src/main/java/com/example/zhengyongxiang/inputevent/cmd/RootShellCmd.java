@@ -1,4 +1,4 @@
-package com.example.zhengyongxiang.inputevent;
+package com.example.zhengyongxiang.inputevent.cmd;
 
 import android.text.TextUtils;
 
