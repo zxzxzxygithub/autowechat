@@ -7,7 +7,12 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.IBinder;
 import android.support.annotation.IntDef;
-
+/**
+ *
+ *@description 用于取消前台服务的通知栏图标
+ *@author zhengyx
+ *@date 2017/5/3
+ */
 public class AssistService extends Service {
     public AssistService() {
     }

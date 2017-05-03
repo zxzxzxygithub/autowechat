@@ -5,10 +5,9 @@ import android.text.TextUtils;
 import java.io.OutputStream;
 
 /**
- * 用root权限执行Linux下的Shell指令
- *
- * @author jzj
- * @since 2014-09-09
+ * @author zhengyx
+ * @description 命令行代码
+ * @date 2017/5/3
  */
 public class RootShellCmd {
 
@@ -24,7 +23,7 @@ public class RootShellCmd {
             if (os == null) {
                 os = Runtime.getRuntime().exec("su").getOutputStream();
             }
-            if(!TextUtils.isEmpty(cmd)){
+            if (!TextUtils.isEmpty(cmd)) {
                 os.write(cmd.getBytes());
             }
             os.flush();

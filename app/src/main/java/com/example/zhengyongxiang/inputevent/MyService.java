@@ -27,6 +27,11 @@ import com.yuan.library.dmanager.download.TaskEntity;
 
 import java.util.List;
 
+/**
+ * @author zhengyx
+ * @description 设置为前台广播，同时接收推送receiver进行命令处理
+ * @date 2017/5/3
+ */
 public class MyService extends Service {
 
 
@@ -73,7 +78,7 @@ public class MyService extends Service {
         startForeground(id, notification);
 //       取消通知
         startService(new Intent(this, AssistService.class));
-        if (intent!=null){
+        if (intent != null) {
             boolean doOrder = intent.getBooleanExtra(MyApplication.KEY_DOORDER, false);
             String pushStr = intent.getStringExtra(MyApplication.KEY_PUSHSTR);
             Context context = this;
@@ -81,7 +86,7 @@ public class MyService extends Service {
                 doOrder(context, pushStr);
             }
         }
-        return  super.onStartCommand(intent,
+        return super.onStartCommand(intent,
                 Service.START_FLAG_REDELIVERY, startId);
     }
 

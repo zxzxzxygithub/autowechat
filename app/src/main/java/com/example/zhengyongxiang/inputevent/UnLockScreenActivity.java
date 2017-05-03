@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.WindowManager;
 
 /**
@@ -15,13 +16,16 @@ import android.view.WindowManager;
 
 public class UnLockScreenActivity extends Activity {
 
+    private static final String TAG = "UnLockScreenActivity";
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
                 WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON |
                 WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         super.onCreate(savedInstanceState);
-        registerReceiver(finishReceiver,new IntentFilter(MyApplication.ACTION_FINISH));
+        registerReceiver(finishReceiver, new IntentFilter(MyApplication.ACTION_FINISH));
+        Log.d(TAG, "UnLockScreenActivity onCreate: ");
     }
 
     @Override
@@ -30,10 +34,11 @@ public class UnLockScreenActivity extends Activity {
         unregisterReceiver(finishReceiver);
     }
 
-    BroadcastReceiver finishReceiver=new BroadcastReceiver() {
+    BroadcastReceiver finishReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-              finish();
+            Log.d(TAG, "UnLockScreenActivity  reveiveaction finish ");
+            finish();
         }
     };
 }
