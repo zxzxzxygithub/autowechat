@@ -14,10 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.zhengyongxiang.inputevent.cmd.Task;
-import com.example.zhengyongxiang.inputevent.cmd.ThreadPool;
-
-import java.util.ArrayList;
+import com.orhanobut.logger.Logger;
 
 /**
  * @author zhengyx
@@ -36,6 +33,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+//
+
+        Logger.d("hello logger");
+
+
         //启动后台服务
         startService(new Intent(this, MyService.class));
         //
