@@ -13,7 +13,7 @@ public class ThreadPool {
 
     private static final int nThreads = 5;
     private ExecutorService executor = null;
-    private ArrayMap<Runnable, Future<?>> map;
+    private ArrayMap<Runnable, Future<?>> map=new ArrayMap<>();
 
     public static ThreadPool getThreadPool() {
         return pool;

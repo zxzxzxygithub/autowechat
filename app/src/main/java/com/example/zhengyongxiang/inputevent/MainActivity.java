@@ -17,6 +17,8 @@ import android.widget.Toast;
 import com.example.zhengyongxiang.inputevent.cmd.Task;
 import com.example.zhengyongxiang.inputevent.cmd.ThreadPool;
 
+import java.util.ArrayList;
+
 /**
  * @author zhengyx
  * @description 入口activity
@@ -39,6 +41,15 @@ public class MainActivity extends AppCompatActivity {
         //
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+//       add task
+//        final  ThreadPool threadPool = ThreadPool.getThreadPool();
+//        Task task;
+//        final ArrayList<Task> taskArrayList=new ArrayList<>();
+//        for(int i=1;i<=5;i++) {
+//            task = new Task("cmd_" + i);
+//            threadPool.addTask(task);
+//            taskArrayList.add(task);
+//        }
 
         //
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -48,10 +59,11 @@ public class MainActivity extends AppCompatActivity {
 //                int count = 1;
 //                new MockManager().sendPicAndText(MainActivity.this, "好", count);
 //                Utils.openWeChat(MainActivity.this);
-                ThreadPool threadPool = ThreadPool.getThreadPool();
-                for(int i=1;i<=50;i++) {
-                    threadPool.addTask(new Task("cmd_"+i));
-                }
+//
+//                for (int i=0;i<taskArrayList.size();i++){
+//
+//                    threadPool.removeTask(taskArrayList.get(i));
+//                }
             }
         });
         // 获取设备管理服务
