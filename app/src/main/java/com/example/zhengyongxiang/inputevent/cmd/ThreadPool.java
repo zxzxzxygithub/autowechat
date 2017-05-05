@@ -6,24 +6,29 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-
+/**
+ * @author zhengyx
+ * @description 线程池处理
+ * @date 2017/5/4
+ */
 public class ThreadPool {
 
     private static ThreadPool pool = new ThreadPool();
 
     private static final int nThreads = 5;
     private ExecutorService executor = null;
-    private ArrayMap<Runnable, Future<?>> map=new ArrayMap<>();
+    private ArrayMap<Runnable, Future<?>> map = new ArrayMap<>();
 
+    /**
+     * @description 获取线程池实例
+     * @author zhengyx
+     * @date 2017/5/4
+     */
     public static ThreadPool getThreadPool() {
         return pool;
     }
 
-    //创建固定大小的线程池,线程池中的线程会不断被重用（当空闲时）
     private ThreadPool() {
-        /**
-         * 始终维护固定数量的线程，线程在执行过程中由于错误导致终止，将会自动创建新的线程进行替补
-         */
         executor = Executors.newFixedThreadPool(nThreads);
     }
 
